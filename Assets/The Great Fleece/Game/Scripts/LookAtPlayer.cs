@@ -5,8 +5,16 @@ using UnityEngine;
 public class LookAtPlayer : MonoBehaviour
 {
     public Transform player;
- 
-    // Update is called once per frame
+    public GameObject startCamera;
+
+
+    private void Start()
+    {
+        transform.position = startCamera.transform.position;
+        transform.rotation = startCamera.transform.rotation;
+    }
+
+
     void Update()
     {
         transform.LookAt(player);
