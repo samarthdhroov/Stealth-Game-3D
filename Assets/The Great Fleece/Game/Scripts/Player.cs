@@ -7,6 +7,13 @@ public class Player : MonoBehaviour
 {
     NavMeshAgent agent;
     Vector3 target;
+
+    public GameObject coinObject;
+    public AudioClip coinSound;
+    bool coinTossed = false;
+
+
+    NavMeshAgent guardNavMesh;
    
 
     private void Start()
@@ -59,6 +66,38 @@ public class Player : MonoBehaviour
         }
 
 
+        if (Input.GetMouseButtonDown(1))
+        {
+            Ray coinRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit rightClickInfo;
+
+            if (Physics.Raycast(coinRay, out rightClickInfo) && coinTossed == false)
+            {
+                coinTossed = true;
+                Instantiate(coinObject, rightClickInfo.point, Quaternion.identity);
+                AudioSource.PlayClipAtPoint(coinSound, transform.position);
+                sendGuardtoCoinPosition(rightClickInfo.point);
+                GetComponentInChildren<Animator>().SetTrigger("Throw");
+            }
+        }
     }
 
+    public void sendGuardtoCoinPosition(Vector3 coinPos)
+    {
+        GameObject[] guardObject = GameObject.FindGameObjectsWithTag("Guard");
+
+        for(int i=0; i < guardObject.Length; i++)
+        {
+            guardNavMesh = guardObject[i].GetComponent<NavMeshAgent>();
+            guardNavMesh.SetDestination(coinPos);
+
+            GuardAI currentGuardScript = guardObject[i].GetComponent<GuardAI>();
+            Animator currentGuardAnimator = guardObject[i].GetComponent<Animator>();
+
+
+            currentGuardScript.coinTossed = true;
+            currentGuardScript.coinPos = coinPos;
+            currentGuardAnimator.SetBool("Walk", true);
+        }
+    }
 }

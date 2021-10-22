@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SecurityEye : MonoBehaviour
 {
-
-
     public GameObject gameOverScene;
 
     private void OnTriggerEnter(Collider other)

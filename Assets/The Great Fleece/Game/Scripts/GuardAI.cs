@@ -12,37 +12,40 @@ public class GuardAI : MonoBehaviour
     float distance;
     bool reverse;
     bool targetPositionReached = false;
+
+    public bool coinTossed = false;
+    public Vector3 coinPos;
   
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animatorComponent = GetComponent<Animator>();
     }
-
+    
     void Update()
     {
-      if (waypoints.Count > 0 && waypoints[currentPosition] != null)
+      if (waypoints.Count > 0 && waypoints[currentPosition] != null && coinTossed == false)
         {
             agent.SetDestination(waypoints[currentPosition].position);
 
             distance = Vector3.Distance(transform.position, waypoints[currentPosition].position);
-
+            
+            if (waypoints.Count < 2) // Checking for the second security guard who has only one waypoint in the associated list. 
+            {
+                animatorComponent.SetBool("Walk", false);
+                return;
+            }
 
             if (distance < 0.5f && targetPositionReached == false)
             {
 
-                if (waypoints.Count < 2)
-                {
-                    animatorComponent.SetBool("Walk", false);
-                    return;
-                }
-               
                 targetPositionReached = true;
                 StartCoroutine(waitBeforeGoingToTheNextPosition());
+
             }
 
             // Animator component controller below.
-            
+
             if (distance < 0.5f)
             {
                 if(animatorComponent != null)
@@ -58,6 +61,18 @@ public class GuardAI : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            float distance =  Vector3.Distance(coinPos, transform.position);
+
+            if (distance < 3.0f)
+            {
+                animatorComponent.SetBool("Walk", false);
+            }
+
+            return;
+        }
+
         
     }
 
