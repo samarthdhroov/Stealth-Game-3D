@@ -10,7 +10,7 @@ public class VoiceOverScript : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
+            AudioManager.Instance.playVoiceOverTrack(clip);
         }
     }
 

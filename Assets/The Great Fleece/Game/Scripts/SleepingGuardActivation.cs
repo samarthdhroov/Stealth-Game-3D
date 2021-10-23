@@ -11,6 +11,7 @@ public class SleepingGuardActivation : MonoBehaviour
         if(other.tag == "Player")
         {
             sleepingGuardCutScene.SetActive(true);
+            GameManager.instance.hasCard = true;
             GetComponent<Collider>().enabled = false;
         }
     }
