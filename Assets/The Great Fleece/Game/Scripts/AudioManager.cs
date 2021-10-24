@@ -34,6 +34,12 @@ public class AudioManager : MonoBehaviour
     {
         BackgroundMusic.Play();
     }
+
+    public void stopBackgroundMusic()
+    {
+        BackgroundMusic.Stop();
+    }
+
     private void Awake()
     {
         _instance = this;

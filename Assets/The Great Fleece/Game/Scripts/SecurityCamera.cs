@@ -25,7 +25,7 @@ public class SecurityCamera : MonoBehaviour
             cameraAnim.enabled = false;
             Color redcolor = new Color(0.6f, 0.1f, 0.1f, 0.3f); // Original Value of Color is (154,29,29,10). However, itd be a white color when played with this config. So, we changed to its decimal values.
             CamRenderer.material.SetColor("_TintColor", redcolor);
-            AudioManager.Instance.BackgroundMusic.Stop();
+            AudioManager.Instance.stopBackgroundMusic();
             StartCoroutine(cameraHalt());
         }
     }
